@@ -37,10 +37,9 @@ const PendingReservations = () => {
         return;
       }
 
-      const response = await axios.get('https://end-project-formation-frontend.onrender.com/api/reservations/admin/pending', {
+      const response = await axios.get('https://end-projet-backend-3.onrender.com/api/reservations/admin/pending', {
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          Authorization: `Bearer ${token}`
         }
       });
       setReservations(response.data.reservations);
@@ -59,11 +58,11 @@ const PendingReservations = () => {
       }
 
       await axios.put(
-        `https://end-project-formation-frontend.onrender.com/api/reservations/admin/${id}/${newStatus === 'confirmed' ? 'confirm' : 'reject'}`,
+        `https://end-projet-backend-3.onrender.com/api/reservations/admin/${id}/${newStatus === 'confirmed' ? 'confirm' : 'reject'}`,
         {},
         {
           headers: {
-            'Authorization': `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
             'Content-Type': 'application/json'
           }
         }

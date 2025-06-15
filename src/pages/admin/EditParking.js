@@ -38,7 +38,7 @@ const EditParking = () => {
       const response = await parkingService.getById(id);
       setParking(response.data);
       if (response.data.image) {
-        setPreviewImage(`https://end-project-formation-frontend.onrender.com/uploads/${response.data.image}`);
+        setPreviewImage(response.data.image);
       }
       setLoading(false);
     } catch (error) {
@@ -62,7 +62,7 @@ const EditParking = () => {
         ...prev,
         image: file
       }));
-      setPreviewImage(URL.createObjectURL(file));
+      setPreviewImage(file);
     }
   };
 
@@ -179,14 +179,9 @@ const EditParking = () => {
                 {previewImage && (
                   <Box sx={{ mb: 2 }}>
                     <img 
-                      src={previewImage} 
+                      src={previewImage ? URL.createObjectURL(previewImage) : `http://localhost:5000/uploads/${parking.image}`} 
                       alt="Aperçu" 
-                      style={{ 
-                        maxWidth: '100%', 
-                        maxHeight: '200px', 
-                        objectFit: 'cover',
-                        borderRadius: '4px'
-                      }} 
+                      className="w-full h-48 object-cover rounded-lg"
                     />
                   </Box>
                 )}

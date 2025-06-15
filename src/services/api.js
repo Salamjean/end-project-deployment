@@ -2,7 +2,7 @@ import axios from 'axios';
 import { mockUsers } from '../mock/data';
 import { parkingData } from '../mock/parkingData';
 
-const API_URL = 'https://end-project-formation-frontend.onrender.com/api';
+const API_URL = 'https://end-projet-backend-fin.onrender.com/api';
 
 const api = axios.create({
   baseURL: API_URL,
@@ -112,7 +112,9 @@ export const authService = {
       console.error('Erreur lors de l\'inscription:', error);
       throw error;
     }
-  }
+  },
+
+  getCurrentUser: () => api.get('/auth/me')
 };
 
 // Services de parking
@@ -129,7 +131,7 @@ export const parkingService = {
         const formattedData = response.data.map(parking => ({
           ...parking,
           id: parking._id,
-          image: parking.image ? `https://end-project-formation-frontend.onrender.com/uploads/${parking.image}` : '/images/default-parking.jpg',
+          image: parking.image ? `https://end-projet-backend-fin.onrender.com/uploads/${parking.image}` : '/images/default-parking.jpg',
           pricePerHour: parseFloat(parking.pricePerHour),
           totalSpots: parseInt(parking.totalSpots),
           availableSpots: parseInt(parking.availableSpots)
@@ -158,7 +160,7 @@ export const parkingService = {
         const formattedData = {
           ...response.data,
           id: response.data._id,
-          image: response.data.image ? `https://end-project-formation-frontend.onrender.com/uploads/${response.data.image}` : '/images/default-parking.jpg',
+          image: response.data.image ? response.data.image : null,
           pricePerHour: parseFloat(response.data.pricePerHour),
           totalSpots: parseInt(response.data.totalSpots),
           availableSpots: parseInt(response.data.availableSpots)
@@ -178,23 +180,44 @@ export const parkingService = {
   },
 
   create: async (parkingData) => {
-    try {
-      const response = await api.post('/parkings', parkingData);
-      return response;
-    } catch (error) {
-      console.error('Erreur lors de la création du parking:', error);
-      throw error;
+    // Si les données sont déjà un FormData, les envoyer directement
+    if (parkingData instanceof FormData) {
+      return api.post('/parkings', parkingData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
     }
+    
+    // Sinon, créer un nouveau FormData
+    const formData = new FormData();
+    Object.entries(parkingData).forEach(([key, value]) => {
+      if (Array.isArray(value)) {
+        value.forEach(item => {
+          formData.append(key, item);
+        });
+      } else {
+        formData.append(key, value);
+      }
+    });
+    
+    return api.post('/parkings', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
   },
 
   update: async (id, parkingData) => {
-    try {
-      const response = await api.put(`/parkings/${id}`, parkingData);
-      return response;
-    } catch (error) {
-      console.error('Erreur lors de la mise à jour du parking:', error);
-      throw error;
-    }
+    const formData = new FormData();
+    Object.keys(parkingData).forEach(key => {
+      formData.append(key, parkingData[key]);
+    });
+    return api.put(`/parkings/${id}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    });
   },
 
   delete: async (id) => {
@@ -240,11 +263,26 @@ export const reservationService = {
     }
   },
 
-  getPending: () => api.get('/reservations/pending'),
-  updateStatus: (id, status) => api.patch(`/reservations/${id}/status`, { status })
+  getByUser: () => api.get('/reservations/user'),
+  getByParking: (parkingId) => api.get(`/reservations/parking/${parkingId}`),
+  cancel: (id) => api.put(`/reservations/${id}/cancel`),
+  getPending: () => api.get('/reservations/admin/pending'),
+  getConfirmed: () => api.get('/reservations/admin/confirmed'),
+  getCancelled: () => api.get('/reservations/admin/cancelled'),
+  confirm: (id) => api.put(`/reservations/admin/${id}/confirm`),
+  reject: (id) => api.put(`/reservations/admin/${id}/reject`)
 };
 
-// Services de statistiques pour le dashboard
+// Services de client
+export const clientService = {
+  getAll: () => api.get('/clients'),
+  getById: (id) => api.get(`/clients/${id}`),
+  create: (clientData) => api.post('/clients', clientData),
+  update: (id, clientData) => api.put(`/clients/${id}`, clientData),
+  delete: (id) => api.delete(`/clients/${id}`)
+};
+
+// Services de tableau de bord
 export const dashboardService = {
   getStats: async () => {
     try {

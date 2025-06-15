@@ -3,6 +3,9 @@ import axios from 'axios';
 import { Card, Row, Col, Button, Modal, Form } from 'react-bootstrap';
 import { useAuth } from '../contexts/AuthContext';
 
+const API_URL = 'http://localhost:5000/api';
+const UPLOADS_URL = 'http://localhost:5000/uploads';
+
 const ParkingList = () => {
   const [parkings, setParkings] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -15,7 +18,8 @@ const ParkingList = () => {
 
   const fetchParkings = async () => {
     try {
-      const response = await axios.get('https://end-project-formation-frontend.onrender.com/api/parkings');
+      const response = await axios.get(`${API_URL}/parkings`);
+      console.log('Parkings reçus:', response.data);
       setParkings(response.data);
     } catch (error) {
       console.error('Erreur lors de la récupération des parkings:', error);
@@ -37,6 +41,11 @@ const ParkingList = () => {
     handleCloseModal();
   };
 
+  const handleImageError = (e) => {
+    console.error('Erreur de chargement de l\'image:', e);
+    e.target.src = '/images/default-parking.jpg';
+  };
+
   return (
     <div className="container mt-4">
       <h2 className="mb-4">Liste des Parkings</h2>
@@ -44,14 +53,13 @@ const ParkingList = () => {
         {parkings.map((parking) => (
           <Col key={parking._id} md={4} className="mb-4">
             <Card>
-              {parking.image && (
-                <Card.Img
-                  variant="top"
-                  src={`https://end-project-formation-frontend.onrender.com/uploads/${parking.image}`}
-                  alt={parking.name}
-                  style={{ height: '200px', objectFit: 'cover' }}
-                />
-              )}
+              <Card.Img
+                variant="top"
+                src={parking.image ? `${UPLOADS_URL}/${parking.image}` : '/images/default-parking.jpg'}
+                alt={parking.name}
+                className="w-full h-48 object-cover rounded-t-lg"
+                onError={handleImageError}
+              />
               <Card.Body>
                 <Card.Title>{parking.name}</Card.Title>
                 <Card.Text>

@@ -64,11 +64,13 @@ const ParkingDetails = () => {
           <CardMedia
             component="img"
             height="400"
-            image={parking.image 
-              ? `https://end-project-formation-frontend.onrender.com/uploads/${parking.image}`
-              : 'https://source.unsplash.com/random/1200x800/?parking'}
+            image={parking.image ? `http://localhost:5000/uploads/${parking.image}` : '/images/default-parking.jpg'}
             alt={parking.name}
             sx={{ objectFit: 'cover' }}
+            onError={(e) => {
+              console.error('Erreur de chargement de l\'image:', e);
+              e.target.src = '/images/default-parking.jpg';
+            }}
           />
         </Card>
 

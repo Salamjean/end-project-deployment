@@ -55,9 +55,9 @@ const Clients = () => {
         return;
       }
 
-      const response = await axios.get('https://end-project-formation-frontend.onrender.com/api/clients', {
+      const response = await axios.get('https://end-projet-backend-3.onrender.com/api/clients', {
         headers: {
-          'Authorization': `Bearer ${token}`
+          Authorization: `Bearer ${token}`
         }
       });
 
@@ -84,7 +84,7 @@ const Clients = () => {
     console.log('Tentative de suppression du client:', clientId); // Log pour déboguer
 
     const response = await axios.delete(
-      `https://end-project-formation-frontend.onrender.com/api/clients/${clientId}`,
+      `https://end-projet-backend-3.onrender.com/api/clients/${clientId}`,
       {
         headers: { 'Authorization': `Bearer ${token}` }
       }

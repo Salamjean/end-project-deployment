@@ -70,9 +70,9 @@ const AddClient = () => {
         return;
       }
 
-      const response = await axios.get(`https://end-project-formation-frontend.onrender.com/api/clients/${id}`, {
+      const response = await axios.get(`https://end-projet-backend-3.onrender.com/api/clients/${id}`, {
         headers: {
-          'Authorization': `Bearer ${token}`
+          Authorization: `Bearer ${token}`
         }
       });
 
@@ -97,7 +97,7 @@ const AddClient = () => {
 
   const fetchParkings = async () => {
     try {
-      const response = await axios.get('https://end-project-formation-frontend.onrender.com/api/parkings');
+      const response = await axios.get('https://end-projet-backend-3.onrender.com/api/parkings');
       if (Array.isArray(response.data)) {
         setParkings(response.data);
       }
@@ -174,11 +174,11 @@ const AddClient = () => {
       let response;
       if (id) {
         response = await axios.put(
-          `https://end-project-formation-frontend.onrender.com/api/clients/${id}`,
+          `https://end-projet-backend-3.onrender.com/api/clients/${id}`,
           clientData,
           {
             headers: {
-              'Authorization': `Bearer ${token}`,
+              Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json'
             }
           }
@@ -186,11 +186,11 @@ const AddClient = () => {
         setSuccess('Client modifié avec succès');
       } else {
         response = await axios.post(
-          'https://end-project-formation-frontend.onrender.com/api/clients',
+          'https://end-projet-backend-3.onrender.com/api/clients',
           clientData,
           {
             headers: {
-              'Authorization': `Bearer ${token}`,
+              Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json'
             }
           }

@@ -134,39 +134,33 @@ const AddParking = () => {
 
       console.log('Données préparées:', parkingData);
 
-      // Si nous avons une image
-      if (formData.image) {
-        const formDataToSend = new FormData();
-        
-        // Ajout des données de base
-        Object.entries(parkingData).forEach(([key, value]) => {
-          if (Array.isArray(value)) {
-            value.forEach(item => {
-              formDataToSend.append(key, item);
-            });
-          } else {
-            formDataToSend.append(key, value);
-          }
-        });
-
-        // Ajout de l'image
-        formDataToSend.append('image', formData.image);
-
-        // Afficher le contenu du FormData pour le débogage
-        console.log('Contenu du FormData:');
-        for (let pair of formDataToSend.entries()) {
-          console.log(pair[0] + ': ' + pair[1]);
+      // Création du FormData
+      const formDataToSend = new FormData();
+      
+      // Ajout des données de base
+      Object.entries(parkingData).forEach(([key, value]) => {
+        if (Array.isArray(value)) {
+          value.forEach(item => {
+            formDataToSend.append(key, item);
+          });
+        } else {
+          formDataToSend.append(key, value);
         }
+      });
 
-        console.log('Envoi avec FormData');
-        const response = await parkingService.create(formDataToSend);
-        console.log('Réponse du serveur:', response.data);
-      } else {
-        // Envoi sans image
-        console.log('Envoi en JSON');
-        const response = await parkingService.create(parkingData);
-        console.log('Réponse du serveur:', response.data);
+      // Ajout de l'image si présente
+      if (formData.image) {
+        formDataToSend.append('image', formData.image);
       }
+
+      // Afficher le contenu du FormData pour le débogage
+      console.log('Contenu du FormData:');
+      for (let pair of formDataToSend.entries()) {
+        console.log(pair[0] + ': ' + pair[1]);
+      }
+
+      const response = await parkingService.create(formDataToSend);
+      console.log('Réponse du serveur:', response.data);
 
       navigate('/dashboard/parkings');
     } catch (error) {

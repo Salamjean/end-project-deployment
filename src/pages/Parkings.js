@@ -9,19 +9,36 @@ import {
   Button,
   Box,
   Chip,
-  ButtonGroup
+  ButtonGroup,
+  CircularProgress
 } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import { parkingData } from '../mock/parkingData';
+import { parkingService } from '../services/api';
 
 const Parkings = () => {
   const navigate = useNavigate();
   const [parkings, setParkings] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Utiliser les données fictives au lieu de l'API
-    setParkings(parkingData);
+    fetchParkings();
   }, []);
+
+  const fetchParkings = async () => {
+    try {
+      setLoading(true);
+      const response = await parkingService.getAll();
+      console.log('Parkings reçus:', response.data);
+      setParkings(response.data);
+      setError(null);
+    } catch (error) {
+      console.error('Erreur lors de la récupération des parkings:', error);
+      setError('Erreur lors du chargement des parkings');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleViewDetails = (parkingId) => {
     navigate(`/parking/${parkingId}`);
@@ -30,6 +47,22 @@ const Parkings = () => {
   const handleReserve = (parkingId) => {
     navigate(`/reservation/${parkingId}`);
   };
+
+  if (loading) {
+    return (
+      <Container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
+        <CircularProgress />
+      </Container>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container>
+        <Typography color="error" align="center">{error}</Typography>
+      </Container>
+    );
+  }
 
   return (
     <Container maxWidth="xl">
@@ -54,7 +87,7 @@ const Parkings = () => {
         }}>
           <Grid container spacing={4} sx={{ maxWidth: '1600px' }}>
             {parkings.map((parking) => (
-              <Grid item xs={12} md={4} key={parking.id}>
+              <Grid item xs={12} md={4} key={parking._id}>
                 <Card 
                   sx={{ 
                     height: '100%', 
@@ -70,12 +103,16 @@ const Parkings = () => {
                 >
                   <CardMedia
                     component="img"
-                    height="250"
+                    height="200"
                     image={parking.image}
                     alt={parking.name}
+                    onError={(e) => {
+                      console.error('Erreur de chargement de l\'image:', e);
+                      e.target.src = '/images/default-parking.jpg';
+                    }}
                     sx={{
                       objectFit: 'cover',
-                      height: '250px'
+                      height: '200px'
                     }}
                   />
                   <CardContent sx={{ flexGrow: 1, p: 3 }}>
@@ -92,7 +129,7 @@ const Parkings = () => {
                         sx={{ mr: 1, fontSize: '1rem', py: 1 }} 
                       />
                       <Chip 
-                        label={`${parking.pricePerHour}€/heure`} 
+                        label={`${parking.pricePerHour} FCFA/heure`} 
                         color="primary"
                         sx={{ fontSize: '1rem', py: 1 }}
                       />
@@ -103,14 +140,14 @@ const Parkings = () => {
                     >
                       <Button 
                         color="primary"
-                        onClick={() => handleViewDetails(parking.id)}
+                        onClick={() => handleViewDetails(parking._id)}
                         sx={{ flex: 1, py: 1.5, fontSize: '1rem' }}
                       >
                         Voir détails
                       </Button>
                       <Button 
                         color="secondary"
-                        onClick={() => handleReserve(parking.id)}
+                        onClick={() => handleReserve(parking._id)}
                         disabled={parking.availableSpots === 0}
                         sx={{ flex: 1, py: 1.5, fontSize: '1rem' }}
                       >

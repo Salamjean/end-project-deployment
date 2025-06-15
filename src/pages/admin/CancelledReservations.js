@@ -43,10 +43,9 @@ const CancelledReservations = () => {
         return;
       }
 
-      const response = await axios.get('https://end-project-formation-frontend.onrender.com/api/reservations/admin/all', {
+      const response = await axios.get('https://end-projet-backend-3.onrender.com/api/reservations/admin/all', {
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          Authorization: `Bearer ${token}`
         }
       });
 
@@ -75,10 +74,9 @@ const CancelledReservations = () => {
         return;
       }
 
-      await axios.delete(`https://end-project-formation-frontend.onrender.com/api/reservations/admin/${reservationToDelete._id}`, {
+      await axios.delete(`https://end-projet-backend-3.onrender.com/api/reservations/admin/${reservationToDelete._id}`, {
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          Authorization: `Bearer ${token}`
         }
       });
 

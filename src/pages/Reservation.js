@@ -92,6 +92,32 @@ const Reservation = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Validation des champs
+      if (!formData.firstName || !formData.lastName || !formData.email || !formData.phone) {
+        setError('Veuillez remplir tous les champs obligatoires');
+        return;
+      }
+
+      // Validation de l'email
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(formData.email)) {
+        setError('Veuillez entrer une adresse email valide');
+        return;
+      }
+
+      // Validation du numéro de téléphone
+      const phoneRegex = /^[0-9]{10}$/;
+      if (!phoneRegex.test(formData.phone.replace(/\s/g, ''))) {
+        setError('Veuillez entrer un numéro de téléphone valide (10 chiffres)');
+        return;
+      }
+
+      // Validation des dates
+      if (formData.startDate >= formData.endDate) {
+        setError('La date de fin doit être postérieure à la date de début');
+        return;
+      }
+
       const reservationData = {
         parkingId: id,
         firstName: formData.firstName,
@@ -375,10 +401,9 @@ const Reservation = () => {
                               <CardMedia
                                 component="img"
                                 height="250"
-                                image={parking.image 
-                                  ? `https://end-project-formation-frontend.onrender.com/uploads/${parking.image}`
-                                  : 'https://source.unsplash.com/random/800x600/?parking'}
+                                image={`http://localhost:5000/uploads/${parking.image}`}
                                 alt={parking.name}
+                                className="w-full h-48 object-cover rounded-lg"
                               />
                             </Card>
                             <Typography variant="h6" gutterBottom>
