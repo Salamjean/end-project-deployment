@@ -25,7 +25,8 @@
     "start": "node index.js",
     "build": "react-scripts build",
     "dev": "react-scripts start",
-    "test": "react-scripts test"
+    "test": "react-scripts test",
+    "serve": "serve -s build -l 3000" 
   },
   "eslintConfig": {
     "extends": [
