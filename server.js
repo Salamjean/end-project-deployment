@@ -11,7 +11,10 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
+// Use the port provided by Render or default to 10000
 const port = process.env.PORT || 10000;
-app.listen(port, () => {
+
+// Start the server
+app.listen(port, '0.0.0.0', () => {
   console.log(`Server is running on port ${port}`);
 }); 
