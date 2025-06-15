@@ -1,0 +1,217 @@
+/* styles/Clients.css */
+
+/* Conteneur principal */
+.clients-container {
+  padding: 2rem;
+  animation: fadeIn 0.4s ease-out;
+}
+
+.clients-paper {
+  padding: 2rem;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* En-tête */
+.clients-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.clients-title {
+  font-weight: 700 !important;
+  color: #2d3436;
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.clients-title::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 4px;
+  background: linear-gradient(90deg, #6C63FF, #6C63FF);
+  border-radius: 2px;
+}
+
+.add-button {
+  background: linear-gradient(135deg, #6C63FF 0%, #6C63FF 100%) !important;
+  color: white !important;
+  padding: 0.75rem 1.5rem !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  text-transform: none !important;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.2) !important;
+  transition: all 0.3s ease !important;
+}
+
+.add-button:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3) !important;
+}
+
+/* Alertes */
+.alert {
+  margin-bottom: 1.5rem !important;
+  border-radius: 8px !important;
+}
+
+/* Tableau */
+.clients-table {
+  min-width: 100%;
+}
+
+.clients-table .MuiTableCell-head {
+  font-weight: 700 !important;
+  background-color: #f8fafc;
+  color: #2d3436;
+}
+
+.clients-table .MuiTableCell-body {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.reservation-chip {
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+  max-width: 200px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Boutons d'action */
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-button {
+  transition: all 0.3s ease !important;
+}
+
+.action-button:hover {
+  transform: scale(1.1);
+}
+
+/* Boîtes de dialogue */
+.dialog-title {
+  font-weight: 700 !important;
+  color: #2d3436 !important;
+  padding: 1.5rem 1.5rem 0.5rem !important;
+}
+
+.dialog-content {
+  padding: 1.5rem !important;
+}
+
+.dialog-section {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.dialog-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.dialog-section-title {
+  font-weight: 600 !important;
+  color: #6C63FF !important;
+  margin-bottom: 1rem !important;
+}
+
+/* Reçu */
+.receipt-content {
+  padding: 1rem;
+}
+
+.receipt-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #1976d2;
+}
+
+.receipt-section {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background-color: #f8fafc;
+  border-radius: 8px;
+}
+
+.receipt-total {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background-color: #1976d2;
+  color: white !important;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.receipt-footer {
+  margin-top: 2rem;
+  padding-top: 1rem;
+  text-align: center;
+  border-top: 1px solid #e2e8f0;
+  font-style: italic;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive */
+@media (max-width: 960px) {
+  .clients-container {
+    padding: 1.5rem;
+  }
+  
+  .clients-paper {
+    padding: 1.5rem;
+  }
+  
+  .clients-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .action-buttons {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 600px) {
+  .clients-container {
+    padding: 1rem;
+  }
+  
+  .clients-paper {
+    padding: 1rem;
+  }
+  
+  .clients-title {
+    font-size: 1.75rem !important;
+  }
+  
+  .MuiTableCell {
+    padding: 8px !important;
+  }
+}
