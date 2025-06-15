@@ -1,37 +1,51 @@
 import React from 'react';
-import { Box, Container, CssBaseline, ThemeProvider } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { Box, CssBaseline, AppBar, Toolbar, Typography, IconButton } from '@mui/material';
+import { Menu as MenuIcon, AccountCircle } from '@mui/icons-material';
 import Sidebar from './Sidebar';
-import TopBar from './TopBar';
 import { useAuth } from '../../../context/AuthContext';
 
 const DashboardLayout = ({ children }) => {
-  const theme = useTheme();
-  const { user: currentUser } = useAuth();
+  const { user } = useAuth();
 
   return (
-    <ThemeProvider theme={theme}>
-      <Box sx={{ display: 'flex' }}>
-        <CssBaseline />
-        <TopBar />
-        <Sidebar />
-        <Box
-          component="main"
-          sx={{
-            flexGrow: 1,
-            height: '100vh',
-            overflow: 'auto',
-            pt: 8,
-            px: 3,
-            backgroundColor: theme.palette.background.default
-          }}
-        >
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-            {children}
-          </Container>
-        </Box>
+    <Box sx={{ display: 'flex', backgroundColor: '#f5f7fa', margin: '0' }}>
+      <CssBaseline />
+      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, bgcolor: '#6C63FF' }}>
+        <Toolbar>
+          <IconButton
+            color="inherit"
+            aria-label="open drawer"
+            edge="start"
+            sx={{ mr: 2 }}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
+            Dashboard Admin
+          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <AccountCircle />
+            <Typography variant="body1">
+              Admin
+            </Typography>
+          </Box>
+        </Toolbar>
+      </AppBar>
+      <Sidebar />
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          width: '100%',
+          minHeight: '100vh',
+          bgcolor: '#f5f5f5',
+          mt: '64px' // Hauteur de la navbar
+        }}
+      >
+        {children}
       </Box>
-    </ThemeProvider>
+    </Box>
   );
 };
 
